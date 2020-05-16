@@ -34,12 +34,14 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
+    console.log('userInfo: ' + userInfo)
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
+      // Vuex 中的请求
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        commit('SET_TOKEN', data.token) // 存在 Vuex 中
+        setToken(data.token) // 存在 Cookies 中
         resolve()
       }).catch(error => {
         reject(error)

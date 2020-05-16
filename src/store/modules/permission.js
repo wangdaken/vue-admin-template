@@ -47,7 +47,7 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }, roles) { // roles 是用户所带的权限
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {
