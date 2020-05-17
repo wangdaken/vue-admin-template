@@ -34,7 +34,6 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    console.log('userInfo: ' + userInfo)
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       // Vuex 中的请求
@@ -106,4 +105,3 @@ export default {
   mutations,
   actions
 }
-

@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
 export function login(data) {
-  console.log(data)
   return request({
     url: 'http://localhost:8080/api/login',
     method: 'post',
