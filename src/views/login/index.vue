@@ -112,16 +112,15 @@
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         this.loading = true
-                        // 调用 user 模块中的 login
+                        // 调用 @/store/modules/user.js 中的 login 方法
                         this.$store.dispatch('user/login', this.loginForm).then(() => {
-                            // 登录成功
                             this.$router.push({path: this.redirect || '/'})
                             this.loading = false
                         }).catch(() => {
                             this.loading = false
                         })
                     } else {
-                        console.log('error submit!!')
+                        console.log('Error submit.')
                         return false
                     }
                 })

@@ -32,11 +32,11 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // 用户登录
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      // Vuex 中的请求
+      // 调用 @/api/user.js 中的 login 方法
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token) // 存在 Vuex 中
@@ -48,26 +48,32 @@ const actions = {
     })
   },
 
-  // get user info
-  getInfo({ commit, state }) {
+  // 获取用户信息
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      // 调用 @/api/user.js 中的 getInfo 方法
+      getInfo().then(response => {
         const { data } = response
 
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('验证失败，请重新登录。')
         }
 
-        const { roles, name, avatar } = data
+        const { avatarUrl, nickName, roles } = data
 
-        // roles must be a non-empty array
+        const userRoles = []
+        // 用户角色不能为空
         if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+          reject('用户角色不能为空。')
+        } else {
+          roles.forEach((item, index) => {
+            userRoles.push(item.id)
+          })
         }
 
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', avatarUrl)
+        commit('SET_NAME', nickName)
+        commit('SET_ROLES', userRoles)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -75,9 +81,10 @@ const actions = {
     })
   },
 
-  // user logout
+  // 用户注销
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
+      // 调用 @/api/user.js 中的 logout 方法
       logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
@@ -89,7 +96,7 @@ const actions = {
     })
   },
 
-  // remove token
+  // 删除 Token
   resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
